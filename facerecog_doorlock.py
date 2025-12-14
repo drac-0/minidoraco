@@ -1,7 +1,7 @@
 from cvzone.HandTrackingModule import HandDetector
 import cv2
 import face_recognition
-import time
+from time import sleep
 import pyfirmata
 
 board = pyfirmata.Arduino('COM3') 
@@ -32,23 +32,23 @@ while len(passwordlist) != len(checklist) :
     conpin3 = pin3.read()
     conpin4 = pin4.read()
     conpin5 = pin5.read()
-    time.sleep(0.1)
+    sleep(0.1)
     print(checklist) 
     if conpin2  :
         checklist.append(1)
-        time.sleep(0.3)
+        sleep(0.3)
         
     elif conpin3  :
         checklist.append(2)
-        time.sleep(0.3)
+        sleep(0.3)
         
     elif conpin4  :
         checklist.append(3)
-        time.sleep(0.3)
+        sleep(0.3)
         
     elif conpin5  :
         checklist.append(4)
-        time.sleep(0.3)
+        sleep(0.3)
         
     else :
         continue
@@ -162,13 +162,13 @@ print(f"Status : {hasil}")
 if hasil:
     print("Mengaktifkan relay...")
     board.digital[RELAY].write(1)  
-    time.sleep(5)
+    sleep(5)
     board.digital[RELAY].write(0)
     print("Relay dimatikan kembali.")
 
 else:
     print("Wajah tidak dikenali, relay tetap mati.")
     pin12.write(1)
-    time.sleep(5) 
+    sleep(5) 
 
     pin12.write(0)
